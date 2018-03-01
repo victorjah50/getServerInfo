@@ -16,10 +16,12 @@ def readServerListFile(configPathFile):
                 currentline = lines.strip().split(',')
                 #print("Server {0} have opererating system: {1}".format(currentline[0], currentline[1]))
                 if currentline[1] == "linux":
-                    print("server {} linux".format(currentline[0]))
-                    command ="wget https://www.credicorpcapitalcolombia.com/snow/deploy_snow_linux.sh && sudo sh deploy_snow_linux.sh 2>&1 > deploy.log && cat deploy.log"
-                    #command ="wget https://www.credicorpcapitalcolombia.com/snow/undeploy_snow_linux.sh && sudo sh undeploy_snow_linux.sh"
-                    getUnixServerInfo.executeCommand(currentline[0], pathconfigfile.get('Unix', 'user'), pathconfigfile.get('Unix', 'pass'), "22",command)
+                    print("server {} linux on port {}".format(currentline[0],format(currentline[2])))
+                    #command ="wget https://192.168.2.4/snow/deploy_snow_linux.sh && sudo sh deploy_snow_linux.sh 2>&1 > deploy.log && cat deploy.log"
+                    #command ="wget https://192.168.2.4/snow/undeploy_snow_linux.sh && sudo sh undeploy_snow_linux.sh"
+                    #command = "pwd"
+                    command = "nohup sudo nice -n 10 /opt/snow/snowagent -w /opt/snow/ >/dev/null 2>&1 &"
+                    getUnixServerInfo.executeCommand(currentline[0], pathconfigfile.get('Unix', 'user'), pathconfigfile.get('Unix', 'pass'), currentline[2],command)
 
                 elif currentline[1] == "windows":
                     print("server {} windows".format(currentline[0]))
